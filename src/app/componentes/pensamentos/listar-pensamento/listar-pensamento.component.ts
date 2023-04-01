@@ -1,24 +1,28 @@
+import { Component, OnInit } from '@angular/core';
 import { IPensamento } from './../pensamento/pensamento';
-import { Component, Output } from '@angular/core';
+import { PensamentoService } from '../pensamento.service';
 
 @Component({
   selector: 'app-listar-pensamento',
   templateUrl: './listar-pensamento.component.html',
   styleUrls: ['./listar-pensamento.component.scss']
 })
-export class ListarPensamentoComponent {
+export class ListarPensamentoComponent implements OnInit{
+  listaPensamentos: Array<IPensamento> = [];
 
-  listaPensamentos: Array<IPensamento> = [
-    {
-      conteudo: "Conteudo Pensamento 1",
-      autoria: "Autor Pensamento 1",
-      modelo: "modelo3",
-    },
-    {
-      conteudo: "Conteudo Pensamento 2",
-      autoria: "Autor Pensamento 2",
-      modelo: "modelo2",
-    }
-  ];
+  constructor(private pensamentoService: PensamentoService){}
+
+  ngOnInit(): void {
+    this.getPensamentos();
+  }
+
+  getPensamentos(){
+    this.pensamentoService.listPensamentos().subscribe({
+      next: value => {
+        this.listaPensamentos = value;
+      }
+    })
+  }
+
 
 }
